@@ -24,14 +24,23 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
       setFilteredClients(clients);
       return;
     }
-    
+
     const filtered = clients.filter(client => {
       const fieldValue = client[field];
       return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(query.toLowerCase());
     });
-    
+
     setFilteredClients(filtered);
     setCurrentPage(1);
+  };
+
+  const formatCpfCnpj = (value: string) => {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length <= 11) {
+      return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    } else {
+      return digits.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
   };
 
   const indexOfLastClient = currentPage * clientsPerPage;
@@ -43,7 +52,7 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
     <div className="client-list">
       <h2>Clientes</h2>
       <SearchBar onSearch={handleSearch} onReset={onReset} />
-      
+
       <div className="clients-table" role="region" aria-label="Lista de clientes">
         <table>
           <thead>
@@ -60,7 +69,7 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
                 className={selectedClientId === client.id ? 'selected' : ''}
               >
                 <td>{client.nome}</td>
-                <td>{client.cpfCnpj}</td>
+                <td>{formatCpfCnpj(client.cpfCnpj)}</td>
                 <td>
                   <button 
                     onClick={() => onSelectClient(client)}
@@ -73,12 +82,12 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
             ))}
           </tbody>
         </table>
-        
+
         {filteredClients.length === 0 && (
           <p className="no-results">Nenhum cliente encontrado</p>
         )}
       </div>
-      
+
       {totalPages > 1 && (
         <Pagination 
           currentPage={currentPage} 
