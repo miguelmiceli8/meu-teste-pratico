@@ -28,15 +28,15 @@ export function SearchBar({ onSearch, onReset }: SearchBarProps) {
         return false;
       }
     }
-    
+
     if (field === 'cpfCnpj' && query.trim() !== '') {
-      const numberRegex = /^[0-9]+$/;
-      if (!numberRegex.test(query)) {
+      const numericQuery = query.replace(/\D/g, ''); 
+      if (!/^\d+$/.test(numericQuery)) {
         setError("Este campo (CPF/CNPJ) só aceita números");
         return false;
       }
     }
-    
+
     return true;
   };
 
@@ -67,7 +67,7 @@ export function SearchBar({ onSearch, onReset }: SearchBarProps) {
             CPF/CNPJ
           </button>
         </div>
-        
+
         <div className="input-container">
           <input
             type="text"
@@ -80,7 +80,7 @@ export function SearchBar({ onSearch, onReset }: SearchBarProps) {
           {error && <div className="error-message">{error}</div>}
         </div>
       </div>
-      
+
       <div className="search-actions">
         <button 
           onClick={handleSearch} 

@@ -27,7 +27,16 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
 
     const filtered = clients.filter(client => {
       const fieldValue = client[field];
-      return typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(query.toLowerCase());
+
+      if (typeof fieldValue !== 'string') return false;
+
+      if (field === 'cpfCnpj') {
+        const cleanClientValue = fieldValue.replace(/\D/g, '');
+        const cleanQuery = query.replace(/\D/g, '');
+        return cleanClientValue.includes(cleanQuery);
+      }
+
+      return fieldValue.toLowerCase().includes(query.toLowerCase());
     });
 
     setFilteredClients(filtered);

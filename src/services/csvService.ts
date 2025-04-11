@@ -1,15 +1,12 @@
 import * as Papa from 'papaparse';
-import { Cliente, Conta, Agencia } from '../types';
+import { Cliente, Conta, Agencia } from '../types/index';
 
-// Placeholder URLs - replace with actual Google Sheets CSV URLs
 const CSV_URLS = {
     clientes: 'https://docs.google.com/spreadsheets/d/1PBN_HQOi5ZpKDd63mouxttFvvCwtmY97Tb5if5_cdBA/gviz/tq?tqx=out:csv&sheet=clientes',
     contas: 'https://docs.google.com/spreadsheets/d/1PBN_HQOi5ZpKDd63mouxttFvvCwtmY97Tb5if5_cdBA/gviz/tq?tqx=out:csv&sheet=contas',
     agencias: 'https://docs.google.com/spreadsheets/d/1PBN_HQOi5ZpKDd63mouxttFvvCwtmY97Tb5if5_cdBA/gviz/tq?tqx=out:csv&sheet=agencias',
-  };
-  
+};
 
-// Type guard functions to validate enum values
 function isValidEstadoCivil(value: string): value is Cliente['estadoCivil'] {
   return ['Solteiro', 'Casado', 'Viúvo', 'Divorciado'].includes(value);
 }
@@ -18,23 +15,19 @@ function isValidTipoConta(value: string): value is Conta['tipo'] {
   return ['corrente', 'poupanca'].includes(value);
 }
 
-// Helper function to parse date strings (assuming format DD/MM/YYYY)
 function parseDate(dateStr: string): Date {
   if (!dateStr) return new Date();
   
-  // Handle different date formats
   if (dateStr.includes('/')) {
     const [day, month, year] = dateStr.split('/').map(Number);
     return new Date(year, month - 1, day);
   } else if (dateStr.includes('-')) {
     return new Date(dateStr);
   } else {
-    // Try to parse as ISO string or timestamp
     return new Date(dateStr);
   }
 }
 
-// Process client data to ensure correct types
 function processClientData(data: Record<string, any>[]): Cliente[] {
   return data.map(item => ({
     id: String(item.id || ''),
@@ -52,7 +45,6 @@ function processClientData(data: Record<string, any>[]): Cliente[] {
   }));
 }
 
-// Process account data to ensure correct types
 function processAccountData(data: Record<string, any>[]): Conta[] {
   return data.map(item => ({
     id: String(item.id || ''),
@@ -64,7 +56,6 @@ function processAccountData(data: Record<string, any>[]): Conta[] {
   }));
 }
 
-// Process agency data to ensure correct types
 function processAgencyData(data: Record<string, any>[]): Agencia[] {
   return data.map(item => ({
     id: String(item.id || ''),
@@ -74,7 +65,6 @@ function processAgencyData(data: Record<string, any>[]): Agencia[] {
   }));
 }
 
-// Generic function to fetch and parse CSV data
 export async function fetchCSV<T>(
   url: string, 
   processor: (data: Record<string, any>[]) => T[]
@@ -93,23 +83,20 @@ export async function fetchCSV<T>(
         skipEmptyLines: true,
         complete: (results: Papa.ParseResult<Record<string, any>>) => {
           try {
-            // Filter out rows where all values are empty or undefined
             const validData = results.data.filter((row: Record<string, any>) => 
               Object.keys(row).length > 0 && 
               !Object.values(row).every(val => val === '' || val === undefined)
             );
-            
-            // Process the data to ensure correct types
             const processedData = processor(validData);
             resolve(processedData);
           } catch (error) {
             reject(new Error(`Error processing CSV data: ${error instanceof Error ? error.message : String(error)}`));
           }
         },
-        error : (error: Papa.ParseError) => {
+        error: (error: Error) => {
           reject(new Error(`Error parsing CSV: ${error.message}`));
         }
-      });
+      });      
     });
   } catch (error) {
     console.error('Error fetching CSV data:', error);
@@ -117,7 +104,6 @@ export async function fetchCSV<T>(
   }
 }
 
-// Specific functions for each data type
 export const fetchClientes = (): Promise<Cliente[]> => 
   fetchCSV<Cliente>(CSV_URLS.clientes, processClientData);
 
