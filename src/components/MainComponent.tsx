@@ -1,25 +1,36 @@
 import { RefreshButton } from './RefreshButton';
 import { useState } from 'react';
+import { SearchBar } from './SearchBar';
+import { ClientList } from './ClientList';
+import { Cliente } from '../types';
 
-// Componente principal da aplicação
 export function MainComponent() {
-  const [searchQuery, setSearchQuery] = useState(''); // Estado para armazenar a consulta de busca
+  const [searchQuery, setSearchQuery] = useState('');
+  const [clients, setClients] = useState<Cliente[]>([]);
 
-  // Função para resetar a busca
   const handleReset = () => {
-    setSearchQuery(''); // Limpa a consulta de busca
-    // Aqui você pode adicionar lógica para resetar os resultados da busca, se necessário
+    setSearchQuery('');
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
   return (
     <div className="app-container">
       <header>
         <h1>Sistema de Gerenciamento de Clientes</h1>
-        <RefreshButton onReset={handleReset} /> {/* Botão de atualizar */}
+        <RefreshButton onReset={handleReset} />
       </header>
       <main>
-        {/* Conteúdo principal da aplicação */}
-        {/* Aqui você pode adicionar o componente de busca e a tabela de clientes */}
+        <SearchBar onSearch={handleSearch} onReset={handleReset} />
+        <ClientList 
+          clients={clients} 
+          searchQuery={searchQuery}
+          onSelectClient={() => {}}
+          selectedClientId={null}
+          onReset={handleReset}
+        />
       </main>
       <footer>
         {/* Rodapé da aplicação */}

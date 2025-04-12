@@ -6,11 +6,12 @@ import { Pagination } from './Pagination';
 interface ClientListProps {
   clients: Cliente[];
   onSelectClient: (client: Cliente) => void;
-  selectedClientId: string | null; // Corrigido para string | null
+  selectedClientId: string | null;
   onReset: () => void;
+  searchQuery: string;
 }
 
-export function ClientList({ clients, onSelectClient, selectedClientId, onReset }: ClientListProps) {
+export function ClientList({ clients, onSelectClient, selectedClientId, onReset, searchQuery }: ClientListProps) {
   const [filteredClients, setFilteredClients] = useState<Cliente[]>(clients);
   const [currentPage, setCurrentPage] = useState(1);
   const clientsPerPage = 10;
@@ -18,6 +19,18 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
   useEffect(() => {
     setFilteredClients(clients);
   }, [clients]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = clients.filter(client => 
+        client.nome.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredClients(filtered);
+    } else {
+      setFilteredClients(clients);
+    }
+    setCurrentPage(1);
+  }, [searchQuery, clients]);
 
   const handleSearch = (query: string, field: 'nome' | 'cpfCnpj') => {
     if (!query.trim()) {
@@ -75,7 +88,7 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
             {currentClients.map(client => (
               <tr 
                 key={client.id} 
-                className={selectedClientId === client.id ? 'selected' : ''} // Comparação de string
+                className={selectedClientId === client.id ? 'selected' : ''}
               >
                 <td>{client.nome}</td>
                 <td>{formatCpfCnpj(client.cpfCnpj)}</td>

@@ -448,17 +448,21 @@ footer {
 }
 
 @media (max-width: 768px) {
-  main {
+  .app-container {
     padding: 1rem;
   }
-  
+
   .client-list-section,
   .client-details-section {
     padding: 1rem;
   }
-  
+
   .content-container {
     gap: 1rem;
+  }
+
+  .client-data-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -490,4 +494,24 @@ footer {
   .clients-table {
     font-size: 0.9rem;
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 90%;
+  overflow-y: auto;
 }
