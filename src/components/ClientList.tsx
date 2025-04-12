@@ -6,7 +6,7 @@ import { Pagination } from './Pagination';
 interface ClientListProps {
   clients: Cliente[];
   onSelectClient: (client: Cliente) => void;
-  selectedClientId: number | null;
+  selectedClientId: string | null; // Corrigido para string | null
   onReset: () => void;
 }
 
@@ -75,7 +75,7 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
             {currentClients.map(client => (
               <tr 
                 key={client.id} 
-                className={selectedClientId === Number(client.id) ? 'selected' : ''}
+                className={selectedClientId === client.id ? 'selected' : ''} // Comparação de string
               >
                 <td>{client.nome}</td>
                 <td>{formatCpfCnpj(client.cpfCnpj)}</td>
