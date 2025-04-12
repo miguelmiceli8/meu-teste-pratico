@@ -6,7 +6,7 @@ import { Pagination } from './Pagination';
 interface ClientListProps {
   clients: Cliente[];
   onSelectClient: (client: Cliente) => void;
-  selectedClientId: string | null;
+  selectedClientId: number | null;
   onReset: () => void;
 }
 
@@ -75,15 +75,12 @@ export function ClientList({ clients, onSelectClient, selectedClientId, onReset 
             {currentClients.map(client => (
               <tr 
                 key={client.id} 
-                className={selectedClientId === client.id ? 'selected' : ''}
+                className={selectedClientId === Number(client.id) ? 'selected' : ''}
               >
                 <td>{client.nome}</td>
                 <td>{formatCpfCnpj(client.cpfCnpj)}</td>
                 <td>
-                  <button 
-                    onClick={() => onSelectClient(client)}
-                    aria-label={`Ver detalhes de ${client.nome}`}
-                  >
+                  <button onClick={() => onSelectClient(client)} aria-label={`Ver detalhes de ${client.nome}`}>
                     Ver Detalhes
                   </button>
                 </td>
