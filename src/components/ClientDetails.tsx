@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Cliente, Conta, Agencia } from '../types';
 import { AccountList } from './AccountList';
 import { AgencyDetails } from './AgencyDetails';
@@ -6,12 +7,11 @@ interface ClientDetailsProps {
   client: Cliente | null;
   accounts: Conta[];
   agency: Agencia | null;
+  scrollOnMount?: boolean;
 }
 
-export function ClientDetails({ client, accounts, agency }: ClientDetailsProps) {
-  if (!client) {
-    return <div className="client-details-placeholder">Selecione um cliente para ver detalhes</div>;
-  }
+export function ClientDetails({ client, accounts, agency, scrollOnMount = false }: ClientDetailsProps) {
+  const detailsRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (date: Date) => {
     if (!date) return '';
@@ -42,8 +42,23 @@ export function ClientDetails({ client, accounts, agency }: ClientDetailsProps) 
     return value;
   };
 
+  useEffect(() => {
+    if (scrollOnMount && detailsRef.current) {
+      setTimeout(() => {
+        detailsRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
+      }, 100);
+    }
+  }, [scrollOnMount]);
+
+  if (!client) {
+    return <div className="client-details-placeholder">Selecione um cliente para ver detalhes</div>;
+  }
+
   return (
-    <div className="client-details">
+    <div className="client-details" ref={detailsRef}>
       <h2>Detalhes do Cliente</h2>
       <div className="client-info">
         <div className="client-header">

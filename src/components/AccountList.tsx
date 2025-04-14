@@ -21,9 +21,9 @@ export function AccountList({ accounts }: AccountListProps) {
   };
 
   return (
-    <div className="account-list">
+    <div className="account-list mobile-friendly">
       <h3>Contas</h3>
-      <div className="accounts-table" role="region" aria-label="Contas do cliente">
+      <div className="accounts-table" role="region" aria-label="Contas do cliente" tabIndex={0}>
         <table>
           <thead>
             <tr>
@@ -37,11 +37,11 @@ export function AccountList({ accounts }: AccountListProps) {
           <tbody>
             {accounts.map(account => (
               <tr key={account.id}>
-                <td>{account.id}</td>
-                <td>{translateAccountType(account.tipo)}</td>
-                <td>{formatCurrency(account.saldo)}</td>
-                <td>{formatCurrency(account.limiteCredito)}</td>
-                <td>{formatCurrency(account.creditoDisponivel)}</td>
+                <td data-label="ID da Conta">{account.id}</td>
+                <td data-label="Tipo">{translateAccountType(account.tipo)}</td>
+                <td data-label="Saldo" className="currency">{formatCurrency(account.saldo)}</td>
+                <td data-label="Limite de Crédito" className="currency">{formatCurrency(account.limiteCredito)}</td>
+                <td data-label="Crédito Disponível" className="currency">{formatCurrency(account.creditoDisponivel)}</td>
               </tr>
             ))}
           </tbody>

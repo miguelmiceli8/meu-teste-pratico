@@ -1,9 +1,10 @@
+// ... existing imports
 import { useState, useEffect } from 'react';
 import { Cliente, Conta, Agencia } from './types';
 import { fetchClientes, fetchContas, fetchAgencias } from './services/csvService';
 import { ClientList } from './components/ClientList';
 import { ClientDetails } from './components/ClientDetails';
-import './App.css';
+import "./styles/main.css"; // Caminho relativo correto
 
 function App() {
   const [clients, setClients] = useState<Cliente[]>([]);
@@ -12,6 +13,7 @@ function App() {
   const [selectedClient, setSelectedClient] = useState<Cliente | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState(''); // Added searchQuery state
 
   useEffect(() => {
     async function loadData() {
@@ -37,17 +39,14 @@ function App() {
     loadData();
   }, []);
 
-  const clientAccounts = selectedClient 
-    ? accounts.filter(account => account.cpfCnpjCliente === selectedClient.cpfCnpj)
-    : [];
-    
-  const clientAgency = selectedClient 
-    ? agencies.find(agency => agency.codigo === selectedClient.codigoAgencia) || null
-    : null;
-
   const handleReset = () => {
-    setSelectedClient(null); // Reseta o cliente selecionado
+    setSearchQuery(''); // Reset the search query
+    setSelectedClient(null); // Optionally reset selected client
   };
+
+  // Determine the accounts and agency for the selected client
+  const clientAccounts = selectedClient ? accounts.filter(account => account.cpfCnpjCliente === selectedClient.cpfCnpj) : [];
+  const clientAgency = selectedClient ? agencies.find(agency => agency.codigo === selectedClient.codigoAgencia) || null : null;
 
   if (loading) {
     return <div className="loading">Carregando dados...</div>;
@@ -70,7 +69,8 @@ function App() {
               clients={clients} 
               onSelectClient={setSelectedClient} 
               selectedClientId={selectedClient?.id || null}
-              onReset={handleReset} // Passa a função de reset
+              onReset={handleReset} // Pass the reset function
+              searchQuery={searchQuery} // Pass the search query
             />
           </section>
           
