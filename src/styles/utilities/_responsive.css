@@ -1,0 +1,30 @@
+
+@media (min-width: 768px) {
+    .search-bar-container {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+  
+  @media (min-width: 640px) {
+    .search-field-container {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .client-data-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .client-data-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+ 
+  @media (max-width: 768px) {
+  }
