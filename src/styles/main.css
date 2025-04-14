@@ -1,0 +1,24 @@
+@import './styles/base/_reset.css';
+@import './styles/base/_variables.css';
+@import './styles/base/_typography.css';
+@import './styles/base/_color-scheme.css';
+@import './styles/base/_elements.css';
+
+/* 2. LAYOUT STYLES */
+@import './styles/layout/_grid.css';
+@import './styles/layout/_footer.css';
+
+/* 3. COMPONENT STYLES */
+@import './styles/components/_ClientList.css';
+@import './styles/components/_ClientDetails.css';
+@import './styles/components/_SearchBar.css';
+@import './styles/components/_Pagination.css';
+@import './styles/components/_AccountList.css';
+@import './styles/components/_Table.css';
+@import './styles/components/_Modal.css';
+
+/* 4. HEADER STYLES */
+@import './styles/headers/_main-header.css';
+
+/* 5. UTILITIES */
+@import './styles/utilities/_responsive.css';

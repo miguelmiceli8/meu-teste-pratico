@@ -1,0 +1,35 @@
+.client-details-section {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .client-details h2 {
+    color: #1e40af;
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .client-details h3 {
+    color: #3b82f6;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  
+  .client-details-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background-color: #f1f5f9;
+    border-radius: 0.5rem;
+    color: #64748b;
+    font-style: italic;
+  }
